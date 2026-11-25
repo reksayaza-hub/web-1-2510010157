@@ -29,7 +29,46 @@ const katalog = [
         gambar: "img/iris-pudak.svg",
         deskripsi: "Selendang ringan bermotif irisan daun pudak (pandan).",
     },
-    // ... lanjutkan untuk semua item (minimal 8 untuk tema Anda)
+    {
+        id: 4,
+        nama: "Kain Motif Bayam Raja",
+        kategori: "kain",
+        harga: 190000,
+        gambar: "img/bayam-raja.svg",
+        deskripsi: "Kain sasirangan dengan motif Bayam Raja yang memiliki corak khas.",
+    },
+    {
+        id: 5,
+        nama: "Kain Motif Naga Balimbur",
+        kategori: "kain",
+        harga: 200000,
+        gambar: "img/naga-balimbur.svg",
+        deskripsi: "Kain sasirangan dengan motif Naga Balimbur yang unik dan menarik.",
+    },
+    {
+        id: 6,
+        nama: "Kain Motif Ombak Sinapur Karang",
+        kategori: "kain",
+        harga: 195000,
+        gambar: "img/ombak-sinapur-karang.svg",
+        deskripsi: "Kain sasirangan dengan motif ombak yang menggambarkan keindahan alam.",
+    },
+    {
+        id: 7,
+        nama: "Kain Sasirangan Motif Tradisional",
+        kategori: "kain",
+        harga: 180000,
+        gambar: "img/sasirangan-tradisional.svg",
+        deskripsi: "Kain sasirangan khas Kalimantan Selatan dengan motif tradisional.",
+    },
+    {
+        id: 8,
+        nama: "Kain Sasirangan Khas Banjar",
+        kategori: "kain",
+        harga: 185000,
+        gambar: "img/sasirangan-banjar.svg",
+        deskripsi: "Kain sasirangan khas Banjar dengan motif tradisional yang mencerminkan budaya Kalimantan Selatan.",
+    },
 ];
 
 // 2. Ambil elemen-elemen HTML yang akan dimanipulasi
@@ -96,4 +135,34 @@ function tampilkanKatalog(daftarProduk) {
     infoJumlah.textContent = `Menampilkan ${daftarProduk.length} dari ${katalog.length} produk`;
 
 }
-    tampilkanKatalog(katalog)
+tampilkanKatalog(katalog)
+
+// 7. Menyaring katalog berdasarkan kata kunci DAN kategori aktif
+function saringKatalog() {
+    const kataKunci = inputCari.value.trim().toLowerCase();
+    const hasil = katalog.filter((produk) => {
+        const cocokKategori = kategoriAktif === "semua" || produk.kategori === kategoriAktif;
+        const cocokKata =
+            produk.nama.toLowerCase().includes(kataKunci)
+        produk.deskripsi.toLowerCase().includes(kataKunci);
+        return cocokKategori && cocokKata;
+    });
+    tampilkanKatalog(hasil);
+}
+// 8. Event: setiap kali pengguna mengetik di kotak pencarian
+inputCari.addEventListener("input", saringKatalog);
+
+// 9. Event: klik tombol filter kategori
+tombolFilter.forEach((tombol) => {
+    tombol.addEventListener("click", () => {
+        kategoriAktif = tombol.dataset.kategori;
+        // perbarui tampilan tombol: hanya satu yang aktif
+        tombolFilter.forEach((t) => {
+            t.classList.remove("aktif");
+            t.setAttribute("aria-pressed", "false");
+        });
+        tombol.classList.add("aktif");
+        tombol.setAttribute("aria-pressed", "true");
+        saringKatalog();
+    });
+});
