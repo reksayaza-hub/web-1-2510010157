@@ -4,72 +4,7 @@
 // =========================================================
 
 // 1. Data katalog: array yang berisi objek-objek produk
-const katalog = [
-    {
-        id: 1,
-        nama: "Kain Motif Gigi Haruan",
-        kategori: "kain",
-        harga: 185000,
-        gambar: "img/gigi-haruan.svg",
-        deskripsi: "Kain katun 2 meter bermotif zig-zag menyerupai gigi ikan haruan.",
-    },
-    {
-        id: 2,
-        nama: "Kain Motif Kambang Kacang",
-        kategori: "kain",
-        harga: 175000,
-        gambar: "img/kambang-kacang.svg",
-        deskripsi: "Motif bunga kacang yang melambangkan keakraban dan kerukunan.",
-    },
-    {
-        id: 3,
-        nama: "Selendang Iris Pudak",
-        kategori: "aksesoris",
-        harga: 120000,
-        gambar: "img/iris-pudak.svg",
-        deskripsi: "Selendang ringan bermotif irisan daun pudak (pandan).",
-    },
-    {
-        id: 4,
-        nama: "Kain Motif Bayam Raja",
-        kategori: "kain",
-        harga: 190000,
-        gambar: "img/bayam-raja.svg",
-        deskripsi: "Kain sasirangan dengan motif Bayam Raja yang memiliki corak khas.",
-    },
-    {
-        id: 5,
-        nama: "Kain Motif Naga Balimbur",
-        kategori: "kain",
-        harga: 200000,
-        gambar: "img/naga-balimbur.svg",
-        deskripsi: "Kain sasirangan dengan motif Naga Balimbur yang unik dan menarik.",
-    },
-    {
-        id: 6,
-        nama: "Kain Motif Ombak Sinapur Karang",
-        kategori: "kain",
-        harga: 195000,
-        gambar: "img/ombak-sinapur-karang.svg",
-        deskripsi: "Kain sasirangan dengan motif ombak yang menggambarkan keindahan alam.",
-    },
-    {
-        id: 7,
-        nama: "Kain Sasirangan Motif Tradisional",
-        kategori: "kain",
-        harga: 180000,
-        gambar: "img/sasirangan-tradisional.svg",
-        deskripsi: "Kain sasirangan khas Kalimantan Selatan dengan motif tradisional.",
-    },
-    {
-        id: 8,
-        nama: "Kain Sasirangan Khas Banjar",
-        kategori: "kain",
-        harga: 185000,
-        gambar: "img/sasirangan-banjar.svg",
-        deskripsi: "Kain sasirangan khas Banjar dengan motif tradisional yang mencerminkan budaya Kalimantan Selatan.",
-    },
-];
+let katalog = [];
 
 // 2. Ambil elemen-elemen HTML yang akan dimanipulasi
 const daftarKatalog = document.querySelector("#daftar-katalog");
@@ -166,3 +101,28 @@ tombolFilter.forEach((tombol) => {
         saringKatalog();
     });
 });
+
+
+// 10. Memuat data katalog dari file JSON secara asinkron
+async function muatKatalog() {
+    infoJumlah.textContent = "Memuat katalog...";
+
+    try {
+        const respons = await fetch("data/katalog.json");
+
+        if (!respons.ok) {
+            throw new Error(`Gagal memuat katalog (HTTP ${respons.status})`);
+        }
+
+        katalog = await respons.json();
+        tampilkanKatalog(katalog);
+
+    } catch (galat) {
+        console.error(galat);
+        infoJumlah.textContent =
+            "Maaf, katalog gagal dimuat. Periksa koneksi Anda lalu muat ulang halaman.";
+    }
+}
+
+muatKatalog();
+
